@@ -50,8 +50,9 @@ if ($CreateDraft) {
         throw 'Authenticate GitHub CLI with: gh auth login -h github.com'
     }
     Write-Host "GitHub account: $activeLogin"
-    gh release view "v$Version" *> $null
-    if ($LASTEXITCODE -eq 0) { throw "Release v$Version already exists." }
+    $existingReleases = gh release list --limit 100 --json tagName | ConvertFrom-Json
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to inspect existing GitHub releases.' }
+    if ($existingReleases.tagName -contains "v$Version") { throw "Release v$Version already exists." }
     gh release create "v$Version" $resolvedInstaller $checksum --draft --title "Nomex Shift v$Version" --notes-file $notes
     if ($LASTEXITCODE -ne 0) { throw 'GitHub draft release creation failed.' }
     Write-Host "Created draft release v$Version."

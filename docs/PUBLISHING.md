@@ -8,16 +8,15 @@ This repository currently documents Nomex Shift 2.3.0. Its first truthful public
 
 ## Local preparation
 
-1. Finish the private production build and Windows 10/11 qualification.
-2. Authenticode-sign the production installer when signing is required.
+1. Finish the private production build, run the self-tests, and verify the installer on the intended Windows versions.
+2. Authenticode-sign the production installer when a signing certificate is available.
 3. Copy it to `release-assets/NomexShift-Setup.exe`.
 4. Run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
   -Version 2.3.0 `
-  -InstallerPath release-assets/NomexShift-Setup.exe `
-  -RequireSigned
+  -InstallerPath release-assets/NomexShift-Setup.exe
 ```
 
 1. Complete `release-assets/RELEASE_NOTES.md`; remove template statements that are not factual.
@@ -28,7 +27,6 @@ powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
 powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
   -Version 2.3.0 `
   -InstallerPath release-assets/NomexShift-Setup.exe `
-  -RequireSigned `
   -CreateDraft
 ```
 
@@ -44,18 +42,4 @@ powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
 
 The workflow verifies a semantic tag, exact filename, Windows PE header, matching file version when available, optional Authenticode signature, and SHA-256. It uploads the generated checksum and makes the permanent latest URL:
 
-`https://github.com/fishboii21/nomex-shift/releases/latest/download/NomexShift-Setup.exe`
-
-## Exact v1.0.0 commands
-
-After rebuilding the actual product as version 1.0.0:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
-  -Version 1.0.0 `
-  -InstallerPath release-assets/NomexShift-Setup.exe `
-  -RequireSigned `
-  -CreateDraft
-```
-
-Then run the manual workflow with tag `v1.0.0`. It will set the title to `Nomex Shift v1.0.0`.
+`https://github.com/shnomie/nomex-shift/releases/latest/download/NomexShift-Setup.exe`

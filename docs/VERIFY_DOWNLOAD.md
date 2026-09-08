@@ -27,7 +27,7 @@ For a release advertised as signed, `Status` must be `Valid`, and the signer mus
 The permanent latest-download URL follows this form:
 
 ```text
-https://github.com/fishboii21/nomex-shift/releases/latest/download/NomexShift-Setup.exe
+https://github.com/shnomie/nomex-shift/releases/latest/download/NomexShift-Setup.exe
 ```
 
 Repository-wide links and badges are controlled by `.github/repository-config.yml` and rendered with `scripts/render-readme.ps1`.

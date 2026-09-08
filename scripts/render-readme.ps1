@@ -14,7 +14,7 @@ foreach ($line in Get-Content -LiteralPath $configPath -Encoding utf8) {
     }
 }
 
-$required = 'owner','repository','company','product','current_version','installer_name','support_url','legal_url','website_url','minimum_windows','release_workflow'
+$required = 'owner','repository','company','product','current_version','installer_name','support_url','legal_url','discord_url','website_url','minimum_windows','release_workflow'
 foreach ($name in $required) {
     if (-not $config.ContainsKey($name) -or [string]::IsNullOrWhiteSpace($config[$name])) { throw "Missing configuration value: $name" }
 }
@@ -29,6 +29,7 @@ $values = @{
     INSTALLER = $config.installer_name
     SUPPORT_URL = $config.support_url
     LEGAL_URL = $config.legal_url
+    DISCORD_URL = $config.discord_url
     WEBSITE_URL = $config.website_url
     WINDOWS = $config.minimum_windows
     WORKFLOW = $config.release_workflow

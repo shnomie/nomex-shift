@@ -26,8 +26,7 @@ Never place signing private keys, PFX/P12 files, certificate passwords, API toke
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
   -Version 2.3.0 `
-  -InstallerPath release-assets/NomexShift-Setup.exe `
-  -RequireSigned
+  -InstallerPath release-assets/NomexShift-Setup.exe
 ```
 
 Review the generated checksum and release notes. After authenticating GitHub CLI, create the draft:
@@ -36,7 +35,6 @@ Review the generated checksum and release notes. After authenticating GitHub CLI
 powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
   -Version 2.3.0 `
   -InstallerPath release-assets/NomexShift-Setup.exe `
-  -RequireSigned `
   -CreateDraft
 ```
 

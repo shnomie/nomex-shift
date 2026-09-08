@@ -2,10 +2,10 @@
 <p align="center"><img src="assets/nomex-shift-banner.png" alt="Nomex Shift" width="100%"></p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/fishboii21/nomex-shift?display_name=tag&sort=semver&style=flat-square&color=1683ff&label=release" alt="Latest release">
+  <img src="https://img.shields.io/github/v/release/shnomie/nomex-shift?display_name=tag&sort=semver&style=flat-square&color=1683ff&label=release" alt="Latest release">
   <img src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-1683ff?style=flat-square" alt="Windows 10 and 11">
-  <img src="https://img.shields.io/github/downloads/fishboii21/nomex-shift/total?style=flat-square&color=1683ff&label=downloads" alt="GitHub release downloads">
-  <img src="https://img.shields.io/github/actions/workflow/status/fishboii21/nomex-shift/validate-repository.yml?style=flat-square&label=release%20validation" alt="Release validation">
+  <img src="https://img.shields.io/github/downloads/shnomie/nomex-shift/total?style=flat-square&color=1683ff&label=downloads" alt="GitHub release downloads">
+  <img src="https://img.shields.io/github/actions/workflow/status/shnomie/nomex-shift/validate-repository.yml?style=flat-square&label=release%20validation" alt="Release validation">
   <img src="https://img.shields.io/badge/license-Proprietary-ffffff?style=flat-square&labelColor=05070c" alt="Proprietary license">
 </p>
 
@@ -13,12 +13,10 @@
 <p align="center"><strong>A compact Windows utility for inspecting, changing, and safely restoring the MAC address presented by a network adapter on the local network.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/fishboii21/nomex-shift/releases/latest/download/NomexShift-Setup.exe"><img src="https://img.shields.io/badge/DOWNLOAD%20NOMEX%20SHIFT-WINDOWS%20INSTALLER-1683ff?style=for-the-badge&logo=windows&logoColor=white" alt="Download Nomex Shift"></a>
+  <a href="https://github.com/shnomie/nomex-shift/releases/latest/download/NomexShift-Setup.exe"><img src="https://img.shields.io/badge/DOWNLOAD%20NOMEX%20SHIFT-WINDOWS%20INSTALLER-1683ff?style=for-the-badge&logo=windows&logoColor=white" alt="Download Nomex Shift"></a>
 </p>
 
 > **Download Shift only from this repository's Releases page or another link published by Nomex.** Never run rehosted, renamed, or modified installers.
->
-> If GitHub shows no release, no public installer has been approved yet. The permanent button above becomes available after the first validated release is published.
 
 ## What Shift does
 
@@ -49,11 +47,11 @@ Shift does **not** hide your public IP address, replace a VPN, guarantee anonymi
 - A network adapter and driver that permit address overrides
 - Internet access only for licensing, product configuration, vendor-index updates, support, and application updates
 
-The current public product version is **2.3.0**. Release qualification should be completed on clean Windows 10 and Windows 11 systems before publication.
+The current public product version is **2.3.0**. Nomex Shift is designed for Windows 10 and Windows 11 x64; adapter support still depends on the hardware and driver.
 
 ## Install
 
-1. Open the [latest release](https://github.com/fishboii21/nomex-shift/releases/latest).
+1. Open the [latest release](https://github.com/shnomie/nomex-shift/releases/latest).
 2. Download **`NomexShift-Setup.exe`** and **`SHA256SUMS.txt`**.
 3. [Verify the SHA-256 checksum](docs/VERIFY_DOWNLOAD.md).
 4. Run the installer, review the publisher information and legal terms, and approve elevation only if Windows requests it.
@@ -92,7 +90,7 @@ The values must match exactly. A checksum detects accidental or malicious file c
 
 ## Version history
 
-See [CHANGELOG.md](CHANGELOG.md) for product history and the [Releases page](https://github.com/fishboii21/nomex-shift/releases) for installers, checksums, release notes, and known issues.
+See [CHANGELOG.md](CHANGELOG.md) for product history and the [Releases page](https://github.com/shnomie/nomex-shift/releases) for installers, checksums, release notes, and known issues.
 
 ## FAQ and troubleshooting
 
@@ -103,7 +101,7 @@ See [CHANGELOG.md](CHANGELOG.md) for product history and the [Releases page](htt
 
 ## Support and Discord
 
-Use [official Nomex support](https://github.com/fishboii21/nomex-shift/issues/new/choose) or the in-app support page. The official Discord invite, when available, is published through the Nomex support site; do not trust unlisted invites. Review and redact diagnostic reports before sending them. Never post license keys, passwords, tokens, recovery material, or signing credentials.
+Use [official Nomex support](https://github.com/shnomie/nomex-shift/issues/new/choose), the in-app support page, or join the [official Nomex Discord](https://discord.gg/DcrzfkRTKK). Review and redact diagnostic reports before sending them. Never post license keys, passwords, tokens, recovery material, or signing credentials.
 
 ## Legal
 
@@ -115,4 +113,4 @@ This public repository contains release information, documentation, screenshots,
 
 ---
 
-<p align="center"><img src="assets/nomex-rocket-n.png" alt="Nomex rocket-shaped N" width="72"><br><a href="https://github.com/fishboii21/nomex-shift">Nomex home</a> · <a href="https://github.com/fishboii21/nomex-shift/tree/main/legal">Legal index</a><br><sub>© 2026 Nomex. Original Nomex materials are proprietary.</sub></p>
+<p align="center"><img src="assets/nomex-rocket-n.png" alt="Nomex rocket-shaped N" width="72"><br><a href="https://github.com/shnomie/nomex-shift">Nomex home</a> · <a href="https://github.com/shnomie/nomex-shift/tree/main/legal">Legal index</a><br><sub>© 2026 Nomex. Original Nomex materials are proprietary.</sub></p>

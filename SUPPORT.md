@@ -14,4 +14,4 @@ Never send license keys, passwords, tokens, seed phrases, private keys, signing 
 
 Use GitHub Issues only for reproducible public bugs and feature requests. Account, purchase, license, abuse, privacy, and security matters belong in private support.
 
-The official Discord invite, when available, is linked by the support site. Do not trust servers or direct messages claiming to be Nomex unless they are linked from an official Nomex surface.
+Join the [official Nomex Discord](https://discord.gg/DcrzfkRTKK) for community support. Do not trust servers or direct messages claiming to be Nomex unless they are linked from an official Nomex surface.

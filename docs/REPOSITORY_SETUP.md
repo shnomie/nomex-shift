@@ -1,6 +1,6 @@
 # GitHub Repository Setup
 
-Create the public repository as `fishboii21/nomex-shift`, then apply these settings before the first release.
+The public repository is `shnomie/nomex-shift`. Apply these settings when maintaining the release channel.
 
 Repository identity, product version, links, installer name, and the status-badge workflow are maintained in one place. See [`CONFIGURATION.md`](CONFIGURATION.md).
 

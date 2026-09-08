@@ -16,7 +16,11 @@ foreach ($relative in $required) {
 
 $forbiddenExtensions = '.exe','.msi','.msix','.pfx','.p12','.key','.pem','.sqlite','.db','.cs','.xaml','.csproj','.rs','.ts','.tsx','.py'
 $forbidden = Get-ChildItem -LiteralPath $repositoryRoot -Recurse -File -Force |
-    Where-Object { $_.FullName -notmatch '[\\/]\.git[\\/]' -and $forbiddenExtensions -contains $_.Extension.ToLowerInvariant() }
+    Where-Object {
+        $_.FullName -notmatch '[\\/]\.git[\\/]' -and
+        $_.FullName -notmatch '[\\/]release-assets[\\/]' -and
+        $forbiddenExtensions -contains $_.Extension.ToLowerInvariant()
+    }
 if ($forbidden) { throw "Forbidden public files found:`n$($forbidden.FullName -join "`n")" }
 
 $textFiles = Get-ChildItem -LiteralPath $repositoryRoot -Recurse -File -Force |

@@ -20,4 +20,4 @@ powershell -ExecutionPolicy Bypass -File scripts/render-readme.ps1
 
 Commit the configuration, generated `README.md`, and generated `.github/ISSUE_TEMPLATE/config.yml` together. The validation workflow fails if generated files are out of date.
 
-Relative links inside policy and support documents intentionally remain relative; they move with the repository and require no owner or domain replacement. Until a Nomex web endpoint is confirmed live, the configured website, support, and legal destinations point to this GitHub repository. Leave `discord_url` empty until an official invite is ready. Do not insert an example invite or a private staff link.
+Relative links inside policy and support documents intentionally remain relative; they move with the repository and require no owner or domain replacement. The configured website, support, and legal destinations point to this GitHub repository, and `discord_url` contains the official public Nomex invite.

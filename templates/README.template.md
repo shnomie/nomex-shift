@@ -17,8 +17,6 @@
 </p>
 
 > **Download Shift only from this repository's Releases page or another link published by Nomex.** Never run rehosted, renamed, or modified installers.
->
-> If GitHub shows no release, no public installer has been approved yet. The permanent button above becomes available after the first validated release is published.
 
 ## What Shift does
 
@@ -49,7 +47,7 @@ Shift does **not** hide your public IP address, replace a VPN, guarantee anonymi
 - A network adapter and driver that permit address overrides
 - Internet access only for licensing, product configuration, vendor-index updates, support, and application updates
 
-The current public product version is **{{VERSION}}**. Release qualification should be completed on clean Windows 10 and Windows 11 systems before publication.
+The current public product version is **{{VERSION}}**. Nomex Shift is designed for Windows 10 and Windows 11 x64; adapter support still depends on the hardware and driver.
 
 ## Install
 
@@ -103,7 +101,7 @@ See [CHANGELOG.md](CHANGELOG.md) for product history and the [Releases page](htt
 
 ## Support and Discord
 
-Use [official Nomex support]({{SUPPORT_URL}}) or the in-app support page. The official Discord invite, when available, is published through the Nomex support site; do not trust unlisted invites. Review and redact diagnostic reports before sending them. Never post license keys, passwords, tokens, recovery material, or signing credentials.
+Use [official Nomex support]({{SUPPORT_URL}}), the in-app support page, or join the [official Nomex Discord]({{DISCORD_URL}}). Review and redact diagnostic reports before sending them. Never post license keys, passwords, tokens, recovery material, or signing credentials.
 
 ## Legal
 

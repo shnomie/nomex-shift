@@ -1,3 +1,5 @@
+param([switch]$Check)
+
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $repositoryRoot '.github\repository-config.yml'
@@ -36,11 +38,24 @@ $values = @{
 }
 foreach ($entry in $values.GetEnumerator()) { $readme = $readme.Replace("{{$($entry.Key)}}", $entry.Value) }
 if ($readme -match '\{\{[A-Z_]+\}\}') { throw 'README rendering left an unresolved token.' }
-[System.IO.File]::WriteAllText($outputPath, $readme, [System.Text.UTF8Encoding]::new($false))
 
 $issueConfig = Get-Content -LiteralPath $issueTemplatePath -Raw -Encoding utf8
 foreach ($entry in $values.GetEnumerator()) { $issueConfig = $issueConfig.Replace("{{$($entry.Key)}}", $entry.Value) }
 if ($issueConfig -match '\{\{[A-Z_]+\}\}') { throw 'Issue configuration rendering left an unresolved token.' }
+
+if ($Check) {
+    $normalize = { param([string]$value) $value.Replace("`r`n", "`n") }
+    $currentReadme = Get-Content -LiteralPath $outputPath -Raw -Encoding utf8
+    $currentIssueConfig = Get-Content -LiteralPath $issueOutputPath -Raw -Encoding utf8
+    if ((& $normalize $currentReadme) -cne (& $normalize $readme) -or
+        (& $normalize $currentIssueConfig) -cne (& $normalize $issueConfig)) {
+        throw 'Generated files are not current. Run scripts/render-readme.ps1 and commit the result.'
+    }
+    Write-Host 'Generated README and issue navigation are current.'
+    return
+}
+
+[System.IO.File]::WriteAllText($outputPath, $readme, [System.Text.UTF8Encoding]::new($false))
 [System.IO.File]::WriteAllText($issueOutputPath, $issueConfig, [System.Text.UTF8Encoding]::new($false))
 
 Write-Host 'Rendered README.md and issue navigation from the repository configuration.'

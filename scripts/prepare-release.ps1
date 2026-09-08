@@ -45,8 +45,11 @@ Write-Host "SHA-256: $hash"
 
 if ($CreateDraft) {
     if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { throw 'GitHub CLI is required to create the draft release.' }
-    gh auth status | Out-Host
-    if ($LASTEXITCODE -ne 0) { throw 'Authenticate GitHub CLI with: gh auth login -h github.com' }
+    $activeLogin = gh api user --jq .login
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($activeLogin)) {
+        throw 'Authenticate GitHub CLI with: gh auth login -h github.com'
+    }
+    Write-Host "GitHub account: $activeLogin"
     gh release view "v$Version" *> $null
     if ($LASTEXITCODE -eq 0) { throw "Release v$Version already exists." }
     gh release create "v$Version" $resolvedInstaller $checksum --draft --title "Nomex Shift v$Version" --notes-file $notes

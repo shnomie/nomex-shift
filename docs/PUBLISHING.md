@@ -1,0 +1,61 @@
+# Publishing a Release
+
+## Version integrity
+
+The Git tag, release title, installer product version, application About version, and update metadata must describe the same version.
+
+This repository currently documents Nomex Shift 2.3.0. Its first truthful public tag is therefore `v2.3.0`. If Nomex deliberately wants the first public release to be `v1.0.0`, rebuild the private application and installer with product version `1.0.0` first. Do not label the existing 2.3.0 binary as 1.0.0.
+
+## Local preparation
+
+1. Finish the private production build and Windows 10/11 qualification.
+2. Authenticode-sign the production installer when signing is required.
+3. Copy it to `release-assets/NomexShift-Setup.exe`.
+4. Run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
+  -Version 2.3.0 `
+  -InstallerPath release-assets/NomexShift-Setup.exe `
+  -RequireSigned
+```
+
+1. Complete `release-assets/RELEASE_NOTES.md`; remove template statements that are not factual.
+1. Authenticate GitHub CLI with `gh auth login -h github.com`.
+1. Create the draft:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
+  -Version 2.3.0 `
+  -InstallerPath release-assets/NomexShift-Setup.exe `
+  -RequireSigned `
+  -CreateDraft
+```
+
+## GitHub validation and publication
+
+1. Open **Actions**.
+2. Select **Validate and publish Nomex Shift release**.
+3. Select **Run workflow**.
+4. Enter `v2.3.0`.
+5. Keep **Require a valid Authenticode signature** enabled for a signed production release.
+6. Initially leave **Publish** disabled and inspect the successful validation summary.
+7. Run it again with **Publish** enabled.
+
+The workflow verifies a semantic tag, exact filename, Windows PE header, matching file version when available, optional Authenticode signature, and SHA-256. It uploads the generated checksum and makes the permanent latest URL:
+
+`https://github.com/fishboii21/nomex-shift/releases/latest/download/NomexShift-Setup.exe`
+
+## Exact v1.0.0 commands
+
+After rebuilding the actual product as version 1.0.0:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/prepare-release.ps1 `
+  -Version 1.0.0 `
+  -InstallerPath release-assets/NomexShift-Setup.exe `
+  -RequireSigned `
+  -CreateDraft
+```
+
+Then run the manual workflow with tag `v1.0.0`. It will set the title to `Nomex Shift v1.0.0`.

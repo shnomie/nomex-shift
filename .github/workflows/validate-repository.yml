@@ -1,0 +1,33 @@
+name: Validate public repository
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate release-only contents
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Render configured repository files
+        shell: pwsh
+        run: ./scripts/render-readme.ps1
+
+      - name: Ensure generated files are current
+        shell: pwsh
+        run: |
+          if (git diff --exit-code -- README.md .github/ISSUE_TEMPLATE/config.yml) { exit 0 }
+          throw 'Generated files are not current. Run scripts/render-readme.ps1 and commit the result.'
+
+      - name: Check public repository contents
+        shell: pwsh
+        run: ./scripts/validate-public-repo.ps1

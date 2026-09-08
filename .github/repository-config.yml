@@ -1,0 +1,14 @@
+# Single source of truth for links, badges, and product metadata.
+# Edit this file, then run: powershell -File scripts/render-readme.ps1
+owner: fishboii21
+repository: nomex-shift
+company: Nomex
+product: Nomex Shift
+current_version: 2.3.0
+installer_name: NomexShift-Setup.exe
+support_url: https://github.com/fishboii21/nomex-shift/issues/new/choose
+legal_url: https://github.com/fishboii21/nomex-shift/tree/main/legal
+discord_url: ""
+website_url: https://github.com/fishboii21/nomex-shift
+minimum_windows: Windows 10 or Windows 11, 64-bit
+release_workflow: validate-repository.yml

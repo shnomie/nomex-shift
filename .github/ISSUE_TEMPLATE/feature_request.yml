@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an improvement to Nomex Shift or its public documentation.
+title: "[Feature]: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: Explain the legitimate network-management, recovery, accessibility, or documentation need.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Describe the desired behavior without submitting reverse-engineered or proprietary source material.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Request boundaries
+      options:
+        - label: This request is for authorized and lawful use.
+          required: true
+        - label: This request does not seek ban evasion, access-control circumvention, impersonation, or malicious functionality.
+          required: true

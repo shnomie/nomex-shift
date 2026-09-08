@@ -1,0 +1,67 @@
+name: Bug report
+description: Report a reproducible problem in a public Nomex Shift release.
+title: "[Bug]: "
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include license keys, passwords, tokens, private diagnostics, complete MAC addresses, or personal data. Security reports belong in the private channel described in SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Nomex Shift version
+      description: Find this in Settings → About.
+      placeholder: 2.3.0
+    validations:
+      required: true
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Windows version
+      options:
+        - Windows 11 (64-bit)
+        - Windows 10 (64-bit)
+        - Other or unsupported
+    validations:
+      required: true
+  - type: input
+    id: adapter
+    attributes:
+      label: Adapter and driver
+      description: Adapter model and driver version only; do not include its complete address.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include the exact concise error and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open…
+        2. Select…
+        3. Click…
+    validations:
+      required: true
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Recovery attempted
+      description: State whether Restore Original, Safe Mode, Emergency Restore, or a reboot helped.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checklist
+      options:
+        - label: I downloaded this build from an official Nomex GitHub Release or official Nomex link.
+          required: true
+        - label: I removed secrets and personal data from this report.
+          required: true
+        - label: This is not a private security, account, payment, or license-key report.
+          required: true

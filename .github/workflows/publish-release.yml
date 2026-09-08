@@ -1,0 +1,125 @@
+name: Validate and publish Nomex Shift release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing draft release tag, for example v2.3.0
+        required: true
+        type: string
+      publish:
+        description: Publish after validation; leave off to validate and keep the release as a draft
+        required: true
+        default: false
+        type: boolean
+      require_signed:
+        description: Require a valid Authenticode signature
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nomex-shift-release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-publish:
+    name: Validate ${{ inputs.tag }}
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      INSTALLER_NAME: NomexShift-Setup.exe
+    steps:
+      - name: Check out public release repository
+        uses: actions/checkout@v4
+
+      - name: Validate tag and draft release
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RELEASE_TAG -notmatch '^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') {
+            throw 'Tag must use semantic version format such as v2.3.0.'
+          }
+          gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Create a draft release and upload NomexShift-Setup.exe before running this workflow.'
+          }
+
+      - name: Download exact installer asset
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path validation | Out-Null
+          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern $env:INSTALLER_NAME --dir validation
+          if ($LASTEXITCODE -ne 0) { throw 'The draft release does not contain NomexShift-Setup.exe.' }
+          $assets = Get-ChildItem validation -File
+          if ($assets.Count -ne 1 -or $assets[0].Name -cne $env:INSTALLER_NAME) {
+            throw 'Expected exactly one downloaded asset named NomexShift-Setup.exe.'
+          }
+
+      - name: Validate Windows installer and version
+        id: validate
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $path = Join-Path validation $env:INSTALLER_NAME
+          $bytes = [System.IO.File]::ReadAllBytes($path)
+          if ($bytes.Length -lt 102400 -or $bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) {
+            throw 'Release asset is not a plausible Windows PE executable.'
+          }
+          $expectedVersion = $env:RELEASE_TAG.TrimStart('v').Split('-')[0]
+          $productVersion = (Get-Item $path).VersionInfo.ProductVersion
+          if ($productVersion -and -not $productVersion.StartsWith($expectedVersion, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Installer product version '$productVersion' does not match '$expectedVersion'."
+          }
+          $signature = Get-AuthenticodeSignature -LiteralPath $path
+          "signature_status=$($signature.Status)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          if ('${{ inputs.require_signed }}' -eq 'true' -and $signature.Status -ne 'Valid') {
+            throw "Authenticode signature is required but status is $($signature.Status)."
+          }
+          $hash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()
+          [System.IO.File]::WriteAllText((Join-Path validation 'SHA256SUMS.txt'), "$hash  $env:INSTALLER_NAME`n", [System.Text.UTF8Encoding]::new($false))
+          "sha256=$hash" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Ensure professional release metadata
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $release = gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --json body,name | ConvertFrom-Json
+          if ([string]::IsNullOrWhiteSpace($release.body)) {
+            $version = $env:RELEASE_TAG.TrimStart('v')
+            $body = (Get-Content .github/RELEASE_TEMPLATE.md -Raw).Replace('vX.Y.Z', "v$version")
+            $body | Set-Content validation/RELEASE_NOTES.md -Encoding utf8
+            gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --title "Nomex Shift $env:RELEASE_TAG" --notes-file validation/RELEASE_NOTES.md
+          } elseif ($release.name -ne "Nomex Shift $env:RELEASE_TAG") {
+            gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --title "Nomex Shift $env:RELEASE_TAG"
+          }
+
+      - name: Upload verified release assets
+        shell: pwsh
+        run: |
+          gh release upload $env:RELEASE_TAG validation/NomexShift-Setup.exe validation/SHA256SUMS.txt --repo $env:GITHUB_REPOSITORY --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Release asset upload failed.' }
+
+      - name: Publish release
+        if: ${{ inputs.publish }}
+        shell: pwsh
+        run: |
+          gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
+
+      - name: Release summary
+        shell: pwsh
+        run: |
+          @"
+          ## Nomex Shift $env:RELEASE_TAG
+
+          - SHA-256: ``${{ steps.validate.outputs.sha256 }}``
+          - Authenticode: ``${{ steps.validate.outputs.signature_status }}``
+          - Published: ``${{ inputs.publish }}``
+          - Permanent latest link: https://github.com/$env:GITHUB_REPOSITORY/releases/latest/download/NomexShift-Setup.exe
+          "@ | Add-Content $env:GITHUB_STEP_SUMMARY
